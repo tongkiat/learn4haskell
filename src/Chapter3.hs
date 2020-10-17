@@ -485,6 +485,8 @@ Create a simple enumeration for the meal types (e.g. breakfast). The one who
 comes up with the most number of names wins the challenge. Use your creativity!
 -}
 
+data Meal = Breakfast | Brunch | Lunch | Dinner
+
 {- |
 =⚔️= Task 4
 
