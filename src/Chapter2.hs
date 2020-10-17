@@ -817,15 +817,13 @@ Let's now try to eta-reduce some of the functions and ensure that we
 mastered the skill of eta-reducing.
 -}
 
-divideTenBy :: Int -> Int
+divideTenBy :: Integral a => a -> a
 divideTenBy = div 10
 
--- TODO: type ;)
-listElementsLessThan :: Int -> [Int] -> [Int]
+listElementsLessThan :: Ord a => a -> [a] -> [a]
 listElementsLessThan x = filter (< x)
 
--- Can you eta-reduce this one???
-pairMul :: [Int] -> [Int] -> [Int]
+pairMul :: Num a => [a] -> [a] -> [a]
 pairMul = zipWith (*)
 
 {- |
