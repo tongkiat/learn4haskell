@@ -71,6 +71,8 @@ the `.hs` extension.
 
 module Chapter1 where
 
+import qualified Data.List
+
 {- |
 In Haskell, we have __expressions__. Expressions can be represented by some
 primitive values (numbers: 1, 100; characters: 'a', 'z'; booleans: True, False;
@@ -554,13 +556,8 @@ value after "=" where the condition is true.
 Casual reminder about adding top-level type signatures for all functions :)
 -}
 
-mid :: Int -> Int -> Int -> Int
-mid x y z
-    | x <= z && z <= y = z
-    | y <= z && z <= x = z
-    | y <= x && x <= z = x
-    | z <= x && x <= y = x
-    | otherwise        = y
+mid :: Ord a => a -> a -> a -> a
+mid x y z = Data.List.sort [x, y, z] !! 1
 
 {- |
 =⚔️= Task 8
