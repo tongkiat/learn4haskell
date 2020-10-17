@@ -351,9 +351,11 @@ ghci> :l src/Chapter2.hs
 -}
 
 subList :: Int -> Int -> [a] -> [a]
-subList from to l
-    | from < 0 || to < 0 || to < from = []
-    | otherwise = take (to - from + 1) (drop from l)
+subList i j xs
+    | i < 0 = []
+    | j < 0 = []
+    | i > j = []
+    | otherwise = take (j - i + 1) $ drop i xs
 
 {- |
 =⚔️= Task 4
