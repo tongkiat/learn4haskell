@@ -351,7 +351,9 @@ ghci> :l src/Chapter2.hs
 -}
 
 subList :: Int -> Int -> [a] -> [a]
-subList = error "subList: Not implemented!"
+subList from to l
+    | from < 0 || to < 0 || to < from = []
+    | otherwise = take (to - from + 1) (drop from l)
 
 {- |
 =⚔️= Task 4
