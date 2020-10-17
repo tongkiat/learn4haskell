@@ -4,7 +4,6 @@ Happy to see you here, on the way to the wonderful Functional Programming land
 with Haskell! Fight the fierce Monad Dragon and save the globe from despicable
 runtime exceptions!
 
-
 We appreciate your curiosity and will try to provide you with all the necessary
 equipment for your training before the battle in the real FP world. Learning
 Functional Programming can be challenging. But we designed this training to be
@@ -43,7 +42,6 @@ concepts on the way. In this chapter, you are going to learn:
  ✧ How to write your function from scratch
  ✧ Some standard Haskell functions
 
-
 We are leaving a number of tasks on our path. Your goal is to solve them all and
 make the test for Chapter One green.
 
@@ -70,6 +68,7 @@ Each Haskell module starts with the "module <MODULE_NAME> where" line.
 Modules should have the same name as the corresponding file with
 the `.hs` extension.
 -}
+
 module Chapter1 where
 
 {- |
@@ -114,8 +113,7 @@ signatures__ and provide types in different situations where you don't
 immediately see what types will be inferred.
 -}
 
-
- {-
+{-
 Haskell is a __compiled__ language. At the illustration below, you can see the
 overall picture of the process from your code to the binary of the written
 program:
@@ -174,7 +172,6 @@ Now, you can evaluate some expressions and see their results immediately.
   evaluated in GHCi, but our testing system doesn't check their output.
   They are here just to showcase the different usages of GHCi.
 
-
 GHCi can do much more than evaluating expressions. It also contains some special
 commands starting with a colon. For example, to see the list of all available
 commands, type ":?" in your GHCi.
@@ -210,8 +207,10 @@ So, the output in this example means that 'False' has type 'Bool'.
 
 >>> :t True
 <INSERT THE RESULT INSTEAD OF THE TEXT>
+
 >>> :t 'a'
 <INSERT THE RESULT INSTEAD OF THE TEXT>
+
 >>> :t 42
 <INSERT THE RESULT INSTEAD OF THE TEXT>
 
@@ -356,7 +355,6 @@ all obstacles! And we are always here to help and to decrypt these ancient
 scripts together.
 -}
 
-
 {- |
 =🛡= Defining a function
 
@@ -418,7 +416,6 @@ Don't forget the main rule:
 **Always provide type signatures for top-level functions in Haskell.**
 -}
 
-
 {- |
 =⚔️= Task 3
 
@@ -427,10 +424,10 @@ task is to specify the type of this function.
 
 >>> squareSum 3 4
 49
+
 -}
 
 squareSum x y = (x + y) * (x + y)
-
 
 {- |
 =⚔️= Task 4
@@ -439,6 +436,7 @@ Implement the function that takes an integer value and returns the next 'Int'.
 
 >>> next 10
 11
+
 >>> next (-4)
 -3
 
@@ -448,6 +446,7 @@ Implement the function that takes an integer value and returns the next 'Int'.
   every type ｡.☆.*｡. No need to worry much about "error" here, just replace the
   function body with the proper implementation.
 -}
+
 next :: Int -> Int
 next x = error "next: not implemented!"
 
@@ -479,7 +478,7 @@ Implement a function that returns the last digit of a given number.
 >>> lastDigit 42
 2
 
-🕯 HINT: use the `mod` function
+🕯 HINT: Use the `mod` function
 
 ♫ NOTE: You can discover possible functions to use via Hoogle:
     https://hoogle.haskell.org/
@@ -500,9 +499,9 @@ Implement a function, that takes two numbers and returns the one closer to zero:
 
 >>> closestToZero 10 5
 5
+
 >>> closestToZero (-7) 3
 3
-
 
 🕯 HINT: You can use the 'abs' function and the __if-then-else__ Haskell syntax
   for this task.
@@ -623,8 +622,10 @@ Implement a function that returns the sum of the last two digits of a number.
 
 >>> sumLast2 42
 6
+
 >>> sumLast2 134
 7
+
 >>> sumLast2 1
 1
 
@@ -646,6 +647,7 @@ Implement a function that returns the first digit of a given number.
 
 >>> firstDigit 230
 2
+
 >>> firstDigit 5623
 5
 
