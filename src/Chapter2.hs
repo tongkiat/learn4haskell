@@ -882,12 +882,10 @@ list.
 -}
 
 rotate :: Int -> [a] -> [a]
-rotate n l
+rotate n xs
     | n < 0 = []
-    | null l = []
-    | otherwise =
-        let len = length l
-        in take len (drop (mod n len) (cycle l))
+    | null xs = []
+    | otherwise = take (length xs) $ drop n $ cycle xs
 
 {- |
 =💣= Task 12*
