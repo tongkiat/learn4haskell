@@ -649,7 +649,10 @@ Write a function that takes elements of a list only on even positions.
 
 -}
 
-takeEven = error "takeEven: Not implemented!"
+takeEven :: [a] -> [a]
+takeEven [] = []
+takeEven [x] = [x]
+takeEven (x : _ : xs) = x : takeEven xs
 
 {- |
 =🛡= Higher-order functions
