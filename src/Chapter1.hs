@@ -490,8 +490,8 @@ Implement a function that returns the last digit of a given number.
   whether it works for you!
 -}
 
-lastDigit :: Int -> Int
-lastDigit n = mod (abs n) 10
+lastDigit :: Integral a => a -> a
+lastDigit n = (abs n) `mod` 10
 
 {- |
 =⚔️= Task 6
