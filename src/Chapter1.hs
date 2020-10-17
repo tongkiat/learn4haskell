@@ -519,9 +519,9 @@ branches because it is an expression and it must always return some value.
 👩‍🔬 Due to lazy evaluation in Haskell, only the expression from the branch
   satisfying the check will be returned and, therefore, evaluated.
 -}
-closestToZero :: Int -> Int -> Int
-closestToZero x y = error "closestToZero: not implemented!"
 
+closestToZero :: Int -> Int -> Int
+closestToZero x y = if abs x < abs y then x else y
 
 {- |
 =⚔️= Task 7
