@@ -763,7 +763,7 @@ value of the element itself
 -}
 
 smartReplicate :: [Int] -> [Int]
-smartReplicate l = error "smartReplicate: Not implemented!"
+smartReplicate = concatMap (\x -> replicate x x)
 
 {- |
 =⚔️= Task 9
