@@ -674,8 +674,12 @@ You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
 
-firstDigit n = error "firstDigit: Not implemented!"
-
+firstDigit :: Int -> Int
+firstDigit n = go (divMod (abs n) 10)
+  where
+    go :: (Int, Int) -> Int
+    go (0, lastD) = lastD
+    go (rest, _) = go (divMod rest 10)
 
 {-
 You did it! Now it is time to open pull request with your changes
