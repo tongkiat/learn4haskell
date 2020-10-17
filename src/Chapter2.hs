@@ -906,7 +906,12 @@ and reverses it.
   cheating!
 -}
 
-rewind = error "rewind: Not Implemented!"
+rewind :: [a] -> [a]
+rewind = go []
+  where
+    go :: [a] -> [a] -> [a]
+    go res [] = res
+    go res (x:xs) = go (x : res) xs
 
 {-
 You did it! Now it is time to open pull request with your changes
