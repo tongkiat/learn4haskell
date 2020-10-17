@@ -49,6 +49,7 @@ In this module, we enable the "InstanceSigs" feature that allows writing type
 signatures in places where you can't by default. We believe it's helpful to
 provide more top-level type signatures, especially when learning Haskell.
 -}
+
 {-# LANGUAGE InstanceSigs #-}
 
 module Chapter3 where
@@ -142,7 +143,6 @@ Book:
  AND book author
  AND book cover
  AND book pages
-
 
 -- Sum type
 BookShelf:
@@ -371,7 +371,6 @@ after the fight. The battle has the following possible outcomes:
  ⊛ Monster defeats the knight. In that case return -1
  ⊛ Neither the knight nor the monster wins. On such an occasion, the knight
    doesn't earn any money and keeps what they had before.
-
 -}
 
 {- |
@@ -443,7 +442,6 @@ acceptLoot loot = case loot of
     Shield _ -> "I'll accept this shield as a reward!"
     WizardStaff _ _ -> "What?! I'm not a wizard, take it back!"
 @
-
 
 To sum up all the above, a data type in Haskell can have zero or more
 constructors, and each constructor can have zero or more fields. This altogether
@@ -549,6 +547,7 @@ myBMI height weight = ...
 And to run it you won't be able to mess arguments:
 
 ghci> myBMI (Height 200) (Weight 70)
+
 -}
 
 {-
@@ -558,8 +557,9 @@ Improve the following code (types definition and function implementations) by
 introducing extra newtypes.
 
 🕯 HINT: if you complete this task properly, you don't need to change the
-    implementation of the "hitPlayer" function at all!
+  implementation of the "hitPlayer" function at all!
 -}
+
 data Player = Player
     { playerHealth    :: Int
     , playerArmor     :: Int
@@ -658,7 +658,6 @@ mkMehChest treasure = TreasureChest
     , treasureChestLoot = treasure
     }
 @
-
 
 Polymorphic Algebraic Data Types are a great deal! One of the most common and
 useful standard polymorphic types is __"Maybe"__. It represents the notion of
@@ -818,7 +817,6 @@ instance ArchEnemy Bool where
     getArchEnemy True = "False"
     getArchEnemy False = "True"
 
-
 instance ArchEnemy Int where
     getArchEnemy :: Int -> String
     getArchEnemy i = case i of
@@ -867,7 +865,6 @@ ghci> revealArchEnemy "An adorable string that has no enemies (✿◠ω◠)"
     • In the expression: revealArchEnemy "An adorable string that has no enemies (✿◠ω◠)"
       In an equation for 'it': it = revealArchEnemy "An adorable string that has no enemies (✿◠ω◠)"
 
-
 Interestingly, it is possible to reuse existing instances of data types in the
 same typeclass instances as well. And we also can reuse the __constraints__ in
 the instance declaration for that!
@@ -907,9 +904,9 @@ Implement instances of "Append" for the following types:
   ✧ *(Challenge): "Maybe" where append is appending of values inside "Just" constructors
 
 -}
+
 class Append a where
     append :: a -> a -> a
-
 
 {-
 =🛡= Standard Typeclasses and Deriving
