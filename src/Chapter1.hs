@@ -669,12 +669,11 @@ You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
 
-firstDigit :: Int -> Int
-firstDigit n = go (divMod (abs n) 10)
+firstDigit :: Integral a => a -> a
+firstDigit n = go (abs n `divMod` 10)
   where
-    go :: (Int, Int) -> Int
-    go (0, lastD) = lastD
-    go (rest, _) = go (divMod rest 10)
+    go (0, m) = m
+    go (d, _) = go (d `divMod` 10)
 
 {-
 You did it! Now it is time to open pull request with your changes
