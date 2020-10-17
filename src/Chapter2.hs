@@ -371,9 +371,7 @@ Implement a function that returns only the first half of a given list.
 -}
 
 firstHalf :: [a] -> [a]
-firstHalf l =
-    let halfLen = div (length l) 2
-    in take halfLen l
+firstHalf xs = take (length xs `div` 2) xs
 
 {- |
 =🛡= Pattern matching
