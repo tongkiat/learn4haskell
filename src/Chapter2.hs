@@ -883,7 +883,13 @@ list.
 🕯 HINT: Use the 'cycle' function
 -}
 
-rotate = error "rotate: Not implemented!"
+rotate :: Int -> [a] -> [a]
+rotate n l
+    | n < 0 = []
+    | null l = []
+    | otherwise =
+        let len = length l
+        in take len (drop (mod n len) (cycle l))
 
 {- |
 =💣= Task 12*
