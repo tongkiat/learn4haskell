@@ -71,6 +71,7 @@ the `.hs` extension.
 
 module Chapter1 where
 
+import qualified Data.Char
 import qualified Data.List
 
 {- |
@@ -575,13 +576,9 @@ False
 -}
 
 isVowel :: Char -> Bool
-isVowel c
-    | c == 'a'  = True
-    | c == 'e'  = True
-    | c == 'i'  = True
-    | c == 'o'  = True
-    | c == 'u'  = True
-    | otherwise = False
+isVowel char = any (c ==) "aeiou"
+  where
+    c = Data.Char.toLower char
 
 {- |
 == Local variables and functions
