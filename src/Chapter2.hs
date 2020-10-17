@@ -633,7 +633,7 @@ Implement a function that duplicates each element of the list
 
 duplicate :: [a] -> [a]
 duplicate [] = []
-duplicate (x:xs) = x : x : duplicate xs
+duplicate (x : xs) = x : x : duplicate xs
 
 {- |
 =⚔️= Task 7
