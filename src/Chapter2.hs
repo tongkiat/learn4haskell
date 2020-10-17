@@ -524,7 +524,9 @@ False
 
 -}
 
-isThird42 = error "isThird42: Not implemented!"
+isThird42 :: [Int] -> Bool
+isThird42 (_ : _ : 42 : _) = True
+isThird42 _ = False
 
 {- |
 =🛡= Recursion
