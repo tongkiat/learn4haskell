@@ -777,7 +777,7 @@ the list with only those lists that contain a passed element.
 🕯 HINT: Use the 'elem' function to check whether an element belongs to a list
 -}
 
-contains :: Int -> [[Int]] -> [[Int]]
+contains :: (Foldable t, Eq a) => a -> [t a] -> [t a]
 contains x = filter (elem x)
 
 {- |
