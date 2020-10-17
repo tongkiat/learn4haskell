@@ -643,11 +643,12 @@ Try to introduce variables in this task (either with let-in or where) to avoid
 specifying complex expressions.
 -}
 
-sumLast2 :: Int -> Int
-sumLast2 n =
-    let lastTwo = mod (abs n) 100
-        (second, first) = divMod lastTwo 10
-    in second + first
+sumLast2 :: Integral a => a -> a
+sumLast2 n = d0 + d1
+  where
+    n0 = abs n
+    d0 = lastDigit n0
+    d1 = lastDigit (n0 `div` 10)
 
 {- |
 =💣= Task 10*
