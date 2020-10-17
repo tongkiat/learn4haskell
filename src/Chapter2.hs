@@ -40,6 +40,8 @@ Now, if you are ready, bring it on!
 
 module Chapter2 where
 
+import qualified Data.Foldable
+
 {-
 =🛡= Imports
 
@@ -903,11 +905,7 @@ and reverses it.
 -}
 
 rewind :: [a] -> [a]
-rewind = go []
-  where
-    go :: [a] -> [a] -> [a]
-    go res [] = res
-    go res (x:xs) = go (x : res) xs
+rewind = Data.Foldable.foldl' (flip (:)) []
 
 {-
 You did it! Now it is time to open pull request with your changes
