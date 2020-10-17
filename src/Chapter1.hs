@@ -427,6 +427,7 @@ task is to specify the type of this function.
 
 -}
 
+squareSum :: Int -> Int -> Int
 squareSum x y = (x + y) * (x + y)
 
 {- |
