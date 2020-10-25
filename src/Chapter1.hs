@@ -576,7 +576,7 @@ False
 -}
 
 isVowel :: Char -> Bool
-isVowel char = any (c ==) "aeiou"
+isVowel char = c `elem` "aeiou"
   where
     c = Data.Char.toLower char
 
