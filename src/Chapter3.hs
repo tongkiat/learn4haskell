@@ -347,8 +347,9 @@ Create your own book type of your dreams!
 data Book = Book
     { bookTitle  :: String
     , bookAuthor :: String
-    , bookPages  :: Int
-    }
+    , bookPublisher  :: String
+    , bookYear :: Int
+    } deriving Show
 
 {- |
 =⚔️= Task 2
