@@ -1004,8 +1004,8 @@ instance Append [a] where
 
 instance Append a => Append (Maybe a) where
     append :: Maybe a -> Maybe a -> Maybe a
-    append Nothing mx = mx
-    append mx Nothing = mx
+    append Nothing x = x
+    append x Nothing = x
     append (Just x) (Just y) = Just (append x y)
 
 {-
