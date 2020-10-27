@@ -510,43 +510,44 @@ After defining the city, implement the following functions:
 -}
 
 data City = City
-   { cityCastle :: Castle
-   , cityMain   :: MainBuilding
-   , cityHouses :: [House]
-   }
+    { cityCastle :: Castle
+    , cityMainBuilding :: MainBuilding
+    , cityHouses :: [House]
+    }
+
+data Wall = Wall
 
 data Castle
-    = None
-    | OnlyCastle String
-    | CastleWithWalls String
+    = NoCastle
+    | Castle String (Maybe Wall)
 
 data MainBuilding
     = Church
     | Library
 
-data House = One | Two | Three | Four
+data House
+    = One
+    | Two
+    | Three
+    | Four
+    deriving Enum
 
-countHouse :: House -> Int
-countHouse house = case house of
-    One   -> 1
-    Two   -> 2
-    Three -> 3
-    Four  -> 4
+occupants :: House -> Int
+occupants = succ . fromEnum
 
 buildCastle :: String -> City -> City
 buildCastle castleName city = case cityCastle city of
-    CastleWithWalls _ -> city {cityCastle = CastleWithWalls castleName}
-    _ -> city {cityCastle = OnlyCastle castleName}
+    Castle _ (Just Wall) -> city { cityCastle = Castle castleName (Just Wall) }
+    _ -> city { cityCastle = Castle castleName Nothing }
 
 buildHouse :: House -> City -> City
-buildHouse house city =
-    city { cityHouses = house : cityHouses city }
+buildHouse house city = city { cityHouses = house : cityHouses city }
 
 buildWalls :: City -> City
 buildWalls city = case cityCastle city of
-    OnlyCastle castleName ->
-        if sum (map countHouse (cityHouses city)) >= 10
-        then city { cityCastle = CastleWithWalls castleName}
+    Castle castleName Nothing ->
+        if sum (map occupants (cityHouses city)) >= 10
+        then city { cityCastle = Castle castleName (Just Wall) }
         else city
     _ -> city
 
