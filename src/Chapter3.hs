@@ -1068,29 +1068,28 @@ implement the following functions:
 🕯 HINT: to implement this task, derive some standard typeclasses
 -}
 
-data Weekday
-   = Mon
-   | Tue
-   | Wed
-   | Thu
-   | Fri
-   | Sat
-   | Sun
-   deriving (Show, Eq, Enum, Bounded)
+data DayOfWeek
+   = Monday
+   | Tuesday
+   | Wednesday
+   | Thursday
+   | Friday
+   | Saturday
+   | Sunday
+   deriving (Bounded, Enum, Eq, Show)
 
-isWeekend :: Weekday -> Bool
-isWeekend wd = case wd of
-    Sat -> True
-    Sun -> True
-    _ -> False
+isWeekend :: DayOfWeek -> Bool
+isWeekend Saturday = True
+isWeekend Sunday = True
+isWeekend _ = False
 
-nextDay :: Weekday -> Weekday
-nextDay wd
-    | wd == maxBound = minBound
-    | otherwise = succ wd
+nextDay :: DayOfWeek -> DayOfWeek
+nextDay dayOfWeek
+    | dayOfWeek == maxBound = minBound
+    | otherwise = succ dayOfWeek
 
-daysToParty :: Weekday -> Int
-daysToParty wd = (fromEnum Fri - fromEnum wd) `mod` 7
+daysToParty :: DayOfWeek -> Int
+daysToParty dayOfWeek = (fromEnum Friday - fromEnum dayOfWeek) `mod` 7
 
 {-
 =💣= Task 9*
