@@ -633,13 +633,13 @@ introducing extra newtypes.
   implementation of the "hitPlayer" function at all!
 -}
 
-newtype Health    = Health    Int
-newtype Armor     = Armor     Int
-newtype Attack    = Attack    Int
+newtype Health = Health Int
+newtype Armor = Armor Int
+newtype Attack = Attack Int
 newtype Dexterity = Dexterity Int
-newtype Strength  = Strength  Int
-newtype Damage    = Damage    Int
-newtype Defense   = Defense   Int
+newtype Strength = Strength Int
+newtype Damage = Damage Int
+newtype Defense = Defense Int
 
 data Player = Player
     { playerHealth    :: Health
@@ -650,30 +650,20 @@ data Player = Player
     }
 
 calculatePlayerDamage :: Attack -> Strength -> Damage
-calculatePlayerDamage (Attack attack) (Strength strength) =
-    Damage (attack + strength)
+calculatePlayerDamage (Attack attack) (Strength strength) = Damage (attack + strength)
 
 calculatePlayerDefense :: Armor -> Dexterity -> Defense
-calculatePlayerDefense (Armor armor) (Dexterity dexterity) =
-    Defense (armor * dexterity)
+calculatePlayerDefense (Armor armor) (Dexterity dexterity) = Defense (armor * dexterity)
 
 calculatePlayerHit :: Damage -> Defense -> Health -> Health
-calculatePlayerHit (Damage damage) (Defense defense) (Health health) =
-    Health (health + defense - damage)
+calculatePlayerHit (Damage damage) (Defense defense) (Health health) = Health (health + defense - damage)
 
 -- The second player hits first player and the new first player is returned
 hitPlayer :: Player -> Player -> Player
 hitPlayer player1 player2 =
-    let damage = calculatePlayerDamage
-            (playerAttack player2)
-            (playerStrength player2)
-        defense = calculatePlayerDefense
-            (playerArmor player1)
-            (playerDexterity player1)
-        newHealth = calculatePlayerHit
-            damage
-            defense
-            (playerHealth player1)
+    let damage = calculatePlayerDamage (playerAttack player2) (playerStrength player2)
+        defense = calculatePlayerDefense (playerArmor player1) (playerDexterity player1)
+        newHealth = calculatePlayerHit damage defense (playerHealth player1)
     in player1 { playerHealth = newHealth }
 
 {- |
