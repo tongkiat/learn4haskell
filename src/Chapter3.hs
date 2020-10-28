@@ -991,10 +991,10 @@ Implement instances of "Append" for the following types:
 
 -}
 
+newtype Gold = Gold Int
+
 class Append a where
     append :: a -> a -> a
-
-newtype Gold = Gold Int
 
 instance Append Gold where
     append :: Gold -> Gold -> Gold
@@ -1006,7 +1006,7 @@ instance Append [a] where
 
 instance Append a => Append (Maybe a) where
     append :: Maybe a -> Maybe a -> Maybe a
-    append Nothing x = x
+    append Nothing y = y
     append x Nothing = x
     append (Just x) (Just y) = Just (append x y)
 
