@@ -515,11 +515,11 @@ data City = City
     , cityHouses :: [House]
     }
 
-data Wall = Wall
+data Walls = Walls
 
 data Castle
     = NoCastle
-    | Castle String (Maybe Wall)
+    | Castle String (Maybe Walls)
 
 data MainBuilding
     = Church
@@ -537,7 +537,7 @@ occupants = succ . fromEnum
 
 buildCastle :: String -> City -> City
 buildCastle castleName city = case cityCastle city of
-    Castle _ (Just Wall) -> city { cityCastle = Castle castleName (Just Wall) }
+    Castle _ (Just Walls) -> city { cityCastle = Castle castleName (Just Walls) }
     _ -> city { cityCastle = Castle castleName Nothing }
 
 buildHouse :: House -> City -> City
@@ -547,7 +547,7 @@ buildWalls :: City -> City
 buildWalls city = case cityCastle city of
     Castle castleName Nothing ->
         if sum (map occupants (cityHouses city)) >= 10
-        then city { cityCastle = Castle castleName (Just Wall) }
+        then city { cityCastle = Castle castleName (Just Walls) }
         else city
     _ -> city
 
