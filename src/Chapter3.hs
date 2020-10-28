@@ -1128,6 +1128,92 @@ Implement data types and typeclasses, describing such a battle between two
 contestants, and write a function that decides the outcome of a fight!
 -}
 
+data KnightAction
+    = KnightAttack
+    | KnightCastSpell Int
+    | KnightDrinkPotion Int
+    deriving Show
+
+data MonsterAction
+    = MonsterAttack
+    | MonsterRunAway
+    deriving Show
+
+data Knight = Knight
+    { knightAttack :: Int
+    , knightDefense :: Int
+    , knightHealth :: Int
+    , knightActions :: [KnightAction]
+    } deriving Show
+
+data Monster = Monster
+    { monsterAttack :: Int
+    , monsterHealth :: Int
+    , monsterActions :: [MonsterAction]
+    } deriving Show
+
+class (Show a) => Fighter a where
+    duel :: (Fighter b) => a -> b -> (a, b)
+    sufferDamage :: a -> Int -> a
+    isDead :: a -> Bool
+
+instance Fighter Knight where
+    isDead knight = knightHealth knight <= 0
+
+    sufferDamage knight points = knight
+        { knightDefense = knightDefense knight - defenseDamage
+        , knightHealth = knightHealth knight - healthDamage
+        }
+      where
+        defenseDamage = round $ 0.8 * fromIntegral points
+        healthDamage = round $ 0.2 * fromIntegral points
+
+    duel knight opponent
+        | null actions = (knight, opponent)
+        | otherwise = case action of
+              KnightAttack -> (knight { knightActions = actions' }, sufferDamage opponent $ knightAttack knight)
+              KnightCastSpell spell -> (knight { knightActions = actions', knightDefense = knightDefense knight + spell }, opponent)
+              KnightDrinkPotion potion -> (knight { knightActions = actions', knightHealth = knightHealth knight + potion }, opponent)
+        where
+          actions = knightActions knight
+          actions' = tail actions
+          action = head actions
+
+instance Fighter Monster where
+    isDead monster = monsterHealth monster <= 0
+
+    sufferDamage monster points = monster { monsterHealth = monsterHealth monster - points }
+
+    duel monster opponent
+        | null actions = (monster, opponent)
+        | otherwise = case action of
+              MonsterAttack -> (monster { monsterActions = actions' }, sufferDamage opponent $ monsterAttack monster)
+              MonsterRunAway -> (monster { monsterActions = actions' }, opponent)
+        where
+          actions = monsterActions monster
+          actions' = tail actions
+          action = head actions
+
+mkKnight knight
+    | null actions = knight
+    | otherwise = knight { knightActions = cycle actions }
+    where
+      actions = knightActions knight
+
+mkMonster monster
+    | null actions = monster
+    | otherwise = monster { monsterActions = cycle actions }
+    where
+      actions = monsterActions monster
+
+fight :: (Fighter a, Fighter b) => a -> b -> String
+fight a b
+    | isDead a && isDead b = "Everybody is DEAD!"
+    | isDead a = show b ++ " WINS!"
+    | isDead b = show a ++ " WINS!"
+    | otherwise = fight b' a'
+    where
+      (a', b') = duel a b
 
 {-
 You did it! Now it is time to open pull request with your changes
