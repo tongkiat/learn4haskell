@@ -380,22 +380,22 @@ after the fight. The battle has the following possible outcomes:
    doesn't earn any money and keeps what they had before.
 -}
 
-data Entity = Entity
-    { health :: Int
-    , attack :: Int
-    , gold :: Int
+data Fighter' = Fighter'
+    { health' :: Int
+    , attack' :: Int
+    , gold' :: Int
     }
     deriving Show
 
-newtype Knight = Knight Entity
+newtype Knight' = Knight' Fighter'
 
-newtype Monster = Monster Entity
+newtype Monster' = Monster' Fighter'
 
-fight :: Knight -> Monster -> Int
-fight (Knight knight) (Monster monster)
-    | attack knight >= health monster = gold knight + gold monster
-    | attack monster >= health knight = -1
-    | otherwise = gold knight
+fight' :: Knight' -> Monster' -> Int
+fight' (Knight' knight) (Monster' monster)
+    | attack' knight >= health' monster = gold' knight + gold' monster
+    | attack' monster >= health' knight = -1
+    | otherwise = gold' knight
 
 {- |
 =🛡= Sum types
