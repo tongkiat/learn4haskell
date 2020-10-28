@@ -826,14 +826,16 @@ parametrise data types in places where values can be of any general type.
   maybe-treasure ;)
 -}
 
-data DragonLair treasure power = DragonLair
-    { dragonLairChest :: Maybe (TreasureChest treasure)
-    , dragonLairDragonPower :: power
-    }
-
 data TreasureChest x = TreasureChest
     { treasureChestGold :: Int
     , treasureChestLoot :: x
+    }
+
+newtype Dragon power = Dragon power
+
+data Lair power treasure = DragonLair
+    { lairDragon :: Dragon power
+    , lairTreasureChest :: Maybe (TreasureChest treasure)
     }
 
 {-
