@@ -40,6 +40,8 @@ Now, if you are ready, bring it on!
 
 module Chapter2 where
 
+import qualified Data.Foldable
+
 {-
 =🛡= Imports
 
@@ -74,7 +76,6 @@ When working with lists, the most practical module will be "Data.List":
 
    * http://hackage.haskell.org/package/base-4.14.0.0/docs/Data-List.html
 -}
-
 
 {- |
 =🛡= Lists
@@ -136,43 +137,43 @@ functions in GHCi and insert the corresponding resulting output below:
 
 List of booleans:
 >>> :t [True, False]
-
+[True, False] :: [Bool]
 
 String is a list of characters:
 >>> :t "some string"
-
+"some string" :: [Char]
 
 Empty list:
 >>> :t []
-
+[] :: [a]
 
 Append two lists:
 >>> :t (++)
-
+(++) :: [a] -> [a] -> [a]
 
 Prepend an element at the beginning of a list:
 >>> :t (:)
-
+(:) :: a -> [a] -> [a]
 
 Reverse a list:
 >>> :t reverse
-
+reverse :: [a] -> [a]
 
 Take first N elements of a list:
 >>> :t take
-
+take :: Int -> [a] -> [a]
 
 Create list from N same elements:
 >>> :t replicate
-
+replicate :: Int -> a -> [a]
 
 Split a string by line breaks:
 >>> :t lines
-
+lines :: String -> [String]
 
 Join a list of strings with line breaks:
 >>> :t unlines
-
+unlines :: [String] -> String
 
 -}
 
@@ -186,32 +187,43 @@ Evaluate the following expressions in GHCi and insert the answers. Try
 to guess first, what you will see.
 
 >>> [10, 2] ++ [3, 1, 5]
+[10,2,3,1,5]
 
 >>> [] ++ [1, 4]  -- [] is an empty list
+[1,4]
 
 >>> 3 : [1, 2]
+[3,1,2]
 
 >>> 4 : 2 : [5, 10]  -- prepend multiple elements
+[4,2,5,10]
 
 >>> [1 .. 10]  -- list ranges
+[1,2,3,4,5,6,7,8,9,10]
 
 >>> [10 .. 1]
+[]
 
 >>> [10, 9 .. 1]  -- backwards list with explicit step
+[10,9,8,7,6,5,4,3,2,1]
 
 >>> length [4, 10, 5]  -- list length
+3
 
 >>> replicate 5 True
+[True,True,True,True,True]
 
 >>> take 5 "Hello, World!"
+"Hello"
 
 >>> drop 5 "Hello, World!"
+", World!"
 
 >>> zip "abc" [1, 2, 3]  -- convert two lists to a single list of pairs
+[('a',1),('b',2),('c',3)]
 
 >>> words "Hello   Haskell     World!"  -- split the string into the list of words
-
-
+["Hello","Haskell","World!"]
 
 👩‍🔬 Haskell has a lot of syntax sugar. In the case with lists, any
   list literal like "[3, 1, 2]" is syntax sugar for prepending elements
@@ -243,9 +255,12 @@ It means that when you apply a function to some variable, the value is
 not changed. Instead, you create a new value each time.
 
 >>> import Data.List (sort)  -- sort is not in Prelude
+
 >>> x = [3, 1, 2]  -- you can assign values to variables in GHCi
+
 >>> sort x
 [1,2,3]
+
 >>> x
 [3,1,2]
 
@@ -307,7 +322,6 @@ locomotive, maybe move trains around the railway a bit for the proper
 position, and only then attach everything back again. The same thing
 with adding elements to the end of the list — it is a slow and costly
 process.
-
 -}
 
 {- |
@@ -321,6 +335,7 @@ Remember that each function returns a new list.
 
 >>> subList 3 5 [1 .. 10]
 [4,5,6]
+
 >>> subList 3 0 [True, False, False, True, False]
 []
 
@@ -334,9 +349,15 @@ Don't forget that you can load this module in GHCi to call functions
 from it!
 
 ghci> :l src/Chapter2.hs
+
 -}
+
 subList :: Int -> Int -> [a] -> [a]
-subList = error "subList: Not implemented!"
+subList i j xs
+    | i < 0 = []
+    | j < 0 = []
+    | i > j = []
+    | otherwise = take (j - i + 1) $ drop i xs
 
 {- |
 =⚔️= Task 4
@@ -345,12 +366,14 @@ Implement a function that returns only the first half of a given list.
 
 >>> firstHalf [3, 4, 1, 2]
 [3,4]
+
 >>> firstHalf "bca"
 "b"
--}
--- PUT THE FUNCTION TYPE IN HERE
-firstHalf l = error "firstHalf: Not implemented!"
 
+-}
+
+firstHalf :: [a] -> [a]
+firstHalf xs = take (length xs `div` 2) xs
 
 {- |
 =🛡= Pattern matching
@@ -406,7 +429,6 @@ always matches (the same as a variable), but we don't use its value.
   thing to keep in mind, especially when you have overlapping patterns.
   Also note that, if no pattern matches the value, the function fails
   in runtime.
-
 
 In addition to pattern matching in the function definition, you can
 also use the __case-of__ expression. With case-of, you specify the
@@ -498,11 +520,15 @@ is the number 42.
 
 >>> isThird42 [1, 2, 42, 10]
 True
+
 >>> isThird42 [42, 42, 0, 42]
 False
--}
-isThird42 = error "isThird42: Not implemented!"
 
+-}
+
+isThird42 :: (Eq a, Num a) => [a] -> Bool
+isThird42 (_ : _ : 42 : _) = True
+isThird42 _ = False
 
 {- |
 =🛡= Recursion
@@ -589,8 +615,8 @@ And it works like this:
 
 >>> concat [[2, 1, 3], [1, 2, 3, 4], [0, 5]]
 [2,1,3,1,2,3,4,0,5]
--}
 
+-}
 
 {- |
 =⚔️= Task 6
@@ -601,13 +627,15 @@ Implement a function that duplicates each element of the list
 
 >>> duplicate [3, 1, 2]
 [3,3,1,1,2,2]
+
 >>> duplicate "abac"
 "aabbaacc"
 
 -}
-duplicate :: [a] -> [a]
-duplicate = error "duplicate: Not implemented!"
 
+duplicate :: [a] -> [a]
+duplicate [] = []
+duplicate (x : xs) = x : x : duplicate xs
 
 {- |
 =⚔️= Task 7
@@ -620,8 +648,13 @@ Write a function that takes elements of a list only on even positions.
 
 >>> takeEven [2, 1, 3, 5, 4]
 [2,3,4]
+
 -}
-takeEven = error "takeEven: Not implemented!"
+
+takeEven :: [a] -> [a]
+takeEven [] = []
+takeEven [x] = [x]
+takeEven (x : _ : xs) = x : takeEven xs
 
 {- |
 =🛡= Higher-order functions
@@ -632,6 +665,7 @@ common HOF list functions:
 
 >>> :t filter
 filter :: (a -> Bool) -> [a] -> [a]
+
 >>> :t map
 map :: (a -> b) -> [a] -> [b]
 
@@ -639,6 +673,7 @@ And few usage examples of those functions:
 
 >>> filter even [1..10]  -- keep only even elements in the list
 [2,4,6,8,10]
+
 >>> map not [True, False, True]  -- maps the 'not' function over each element of the given list
 [False,True,False]
 
@@ -686,9 +721,9 @@ GHCi:
 
 >>> :t +d div
 div :: Integer -> Integer -> Integer
+
 >>> :t +d div 10
 div 10 :: Integer -> Integer
-
 
 This fact can be used to pass partial applications of some functions
 directly to other functions.
@@ -700,6 +735,7 @@ You can apply operators partially too!
 
 >>> filter (< 3) [2, 1, 3, 4, 0, 5]
 [2,1,0]
+
 >>> map (* 2) [1..5]
 [2,4,6,8,10]
 
@@ -727,8 +763,9 @@ value of the element itself
 
 🕯 HINT: Use combination of 'map' and 'replicate'
 -}
+
 smartReplicate :: [Int] -> [Int]
-smartReplicate l = error "smartReplicate: Not implemented!"
+smartReplicate = concatMap (\x -> replicate x x)
 
 {- |
 =⚔️= Task 9
@@ -741,8 +778,9 @@ the list with only those lists that contain a passed element.
 
 🕯 HINT: Use the 'elem' function to check whether an element belongs to a list
 -}
-contains = error "contains: Not implemented!"
 
+contains :: (Foldable t, Eq a) => a -> [t a] -> [t a]
+contains x = filter (elem x)
 
 {- |
 =🛡= Eta-reduction
@@ -780,14 +818,15 @@ nextInt = add 1
 Let's now try to eta-reduce some of the functions and ensure that we
 mastered the skill of eta-reducing.
 -}
-divideTenBy :: Int -> Int
-divideTenBy x = div 10 x
 
--- TODO: type ;)
-listElementsLessThan x l = filter (< x) l
+divideTenBy :: Integral a => a -> a
+divideTenBy = div 10
 
--- Can you eta-reduce this one???
-pairMul xs ys = zipWith (*) xs ys
+listElementsLessThan :: Ord a => a -> [a] -> [a]
+listElementsLessThan x = filter (< x)
+
+pairMul :: Num a => [a] -> [a] -> [a]
+pairMul = zipWith (*)
 
 {- |
 =🛡= Lazy evaluation
@@ -837,12 +876,20 @@ list.
 
 >>> rotate 1 [1,2,3,4]
 [2,3,4,1]
+
 >>> rotate 3 [1,2,3,4]
 [4,1,2,3]
 
 🕯 HINT: Use the 'cycle' function
 -}
-rotate = error "rotate: Not implemented!"
+
+rotate :: Int -> [a] -> [a]
+rotate n xs
+    | n < 0 = []
+    | null xs = []
+    | otherwise = take l $ drop (n `mod` l) $ cycle xs
+    where
+      l = length xs
 
 {- |
 =💣= Task 12*
@@ -858,8 +905,9 @@ and reverses it.
   function, but in this task, you need to implement it manually. No
   cheating!
 -}
-rewind = error "rewind: Not Implemented!"
 
+rewind :: [a] -> [a]
+rewind = Data.Foldable.foldl' (flip (:)) []
 
 {-
 You did it! Now it is time to open pull request with your changes
