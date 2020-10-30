@@ -4,7 +4,6 @@ Happy to see you here, on the way to the wonderful Functional Programming land
 with Haskell! Fight the fierce Monad Dragon and save the globe from despicable
 runtime exceptions!
 
-
 We appreciate your curiosity and will try to provide you with all the necessary
 equipment for your training before the battle in the real FP world. Learning
 Functional Programming can be challenging. But we designed this training to be
@@ -43,7 +42,6 @@ concepts on the way. In this chapter, you are going to learn:
  ✧ How to write your function from scratch
  ✧ Some standard Haskell functions
 
-
 We are leaving a number of tasks on our path. Your goal is to solve them all and
 make the test for Chapter One green.
 
@@ -70,7 +68,11 @@ Each Haskell module starts with the "module <MODULE_NAME> where" line.
 Modules should have the same name as the corresponding file with
 the `.hs` extension.
 -}
+
 module Chapter1 where
+
+import qualified Data.Char
+import qualified Data.List
 
 {- |
 In Haskell, we have __expressions__. Expressions can be represented by some
@@ -114,8 +116,7 @@ signatures__ and provide types in different situations where you don't
 immediately see what types will be inferred.
 -}
 
-
- {-
+{-
 Haskell is a __compiled__ language. At the illustration below, you can see the
 overall picture of the process from your code to the binary of the written
 program:
@@ -174,7 +175,6 @@ Now, you can evaluate some expressions and see their results immediately.
   evaluated in GHCi, but our testing system doesn't check their output.
   They are here just to showcase the different usages of GHCi.
 
-
 GHCi can do much more than evaluating expressions. It also contains some special
 commands starting with a colon. For example, to see the list of all available
 commands, type ":?" in your GHCi.
@@ -209,31 +209,33 @@ So, the output in this example means that 'False' has type 'Bool'.
 > Try to guess first and then compare your expectations with GHCi output
 
 >>> :t True
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True :: Bool
+
 >>> :t 'a'
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+'a' :: Char
+
 >>> :t 42
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+42 :: Num p => p
 
 A pair of boolean and char:
 >>> :t (True, 'x')
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(True, 'x') :: (Bool, Char)
 
 Boolean negation:
 >>> :t not
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+not :: Bool -> Bool
 
 Boolean 'and' operator:
 >>> :t (&&)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(&&) :: Bool -> Bool -> Bool
 
 Addition of two numbers:
 >>> :t (+)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+(+) :: Num a => a -> a -> a
 
 Maximum of two values:
 >>> :t max
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+max :: Ord a => a -> a -> a
 
 You might not understand each type at this moment, but don't worry! You've only
 started your Haskell journey. Types will become your friends soon.
@@ -301,43 +303,43 @@ expressions in GHCi
   functions and operators first. Remember this from the previous task? ;)
 
 >>> 1 + 2
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+3
 
 >>> 10 - 15
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+-5
 
 >>> 10 - (-5)  -- negative constants require ()
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+15
 
 >>> (3 + 5) < 10
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> True && False
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+False
 
 >>> 10 < 20 || 20 < 5
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> 2 ^ 10  -- power
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+1024
 
 >>> not False
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+True
 
 >>> div 20 3  -- integral division
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+6
 
 >>> mod 20 3  -- integral division remainder
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+2
 
 >>> max 4 10
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+10
 
 >>> min 5 (max 1 2)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+2
 
 >>> max (min 1 10) (min 5 7)
-<INSERT THE RESULT INSTEAD OF THE TEXT>
+5
 
 Because Haskell is a __statically-typed__ language, you see an error each time
 you try to mix values of different types in situations where you are not
@@ -355,7 +357,6 @@ stop you, right? You're a brave warrior, and you can finish all tasks despite
 all obstacles! And we are always here to help and to decrypt these ancient
 scripts together.
 -}
-
 
 {- |
 =🛡= Defining a function
@@ -418,7 +419,6 @@ Don't forget the main rule:
 **Always provide type signatures for top-level functions in Haskell.**
 -}
 
-
 {- |
 =⚔️= Task 3
 
@@ -427,10 +427,11 @@ task is to specify the type of this function.
 
 >>> squareSum 3 4
 49
+
 -}
 
+squareSum :: Num a => a -> a -> a
 squareSum x y = (x + y) * (x + y)
-
 
 {- |
 =⚔️= Task 4
@@ -439,6 +440,7 @@ Implement the function that takes an integer value and returns the next 'Int'.
 
 >>> next 10
 11
+
 >>> next (-4)
 -3
 
@@ -448,8 +450,9 @@ Implement the function that takes an integer value and returns the next 'Int'.
   every type ｡.☆.*｡. No need to worry much about "error" here, just replace the
   function body with the proper implementation.
 -}
-next :: Int -> Int
-next x = error "next: not implemented!"
+
+next :: Enum a => a -> a
+next = succ
 
 {- |
 After you've implemented the function (or even during the implementation), you
@@ -479,7 +482,7 @@ Implement a function that returns the last digit of a given number.
 >>> lastDigit 42
 2
 
-🕯 HINT: use the `mod` function
+🕯 HINT: Use the `mod` function
 
 ♫ NOTE: You can discover possible functions to use via Hoogle:
     https://hoogle.haskell.org/
@@ -489,9 +492,9 @@ Implement a function that returns the last digit of a given number.
   results. Or you can try to guess the function name, search for it and check
   whether it works for you!
 -}
--- DON'T FORGET TO SPECIFY THE TYPE IN HERE
-lastDigit n = error "lastDigit: Not implemented!"
 
+lastDigit :: Integral a => a -> a
+lastDigit n = abs n `mod` 10
 
 {- |
 =⚔️= Task 6
@@ -500,9 +503,9 @@ Implement a function, that takes two numbers and returns the one closer to zero:
 
 >>> closestToZero 10 5
 5
+
 >>> closestToZero (-7) 3
 3
-
 
 🕯 HINT: You can use the 'abs' function and the __if-then-else__ Haskell syntax
   for this task.
@@ -519,9 +522,9 @@ branches because it is an expression and it must always return some value.
 👩‍🔬 Due to lazy evaluation in Haskell, only the expression from the branch
   satisfying the check will be returned and, therefore, evaluated.
 -}
-closestToZero :: Int -> Int -> Int
-closestToZero x y = error "closestToZero: not implemented!"
 
+closestToZero :: (Ord p, Num p) => p -> p -> p
+closestToZero x y = if abs x < abs y then x else y
 
 {- |
 =⚔️= Task 7
@@ -554,7 +557,8 @@ value after "=" where the condition is true.
 Casual reminder about adding top-level type signatures for all functions :)
 -}
 
-mid x y z = error "mid: not implemented!"
+mid :: Ord a => a -> a -> a -> a
+mid x y z = Data.List.sort [x, y, z] !! 1
 
 {- |
 =⚔️= Task 8
@@ -565,11 +569,16 @@ Implement a function that checks whether a given character is a vowel.
 
 >>> isVowel 'a'
 True
+
 >>> isVowel 'x'
 False
--}
-isVowel c = error "isVowel: not implemented!"
 
+-}
+
+isVowel :: Char -> Bool
+isVowel char = c `elem` "aeiou"
+  where
+    c = Data.Char.toLower char
 
 {- |
 == Local variables and functions
@@ -623,8 +632,10 @@ Implement a function that returns the sum of the last two digits of a number.
 
 >>> sumLast2 42
 6
+
 >>> sumLast2 134
 7
+
 >>> sumLast2 1
 1
 
@@ -632,8 +643,12 @@ Try to introduce variables in this task (either with let-in or where) to avoid
 specifying complex expressions.
 -}
 
-sumLast2 n = error "sumLast2: Not implemented!"
-
+sumLast2 :: Integral a => a -> a
+sumLast2 n = d0 + d1
+  where
+    n0 = abs n
+    d0 = lastDigit n0
+    d1 = lastDigit (n0 `div` 10)
 
 {- |
 =💣= Task 10*
@@ -646,6 +661,7 @@ Implement a function that returns the first digit of a given number.
 
 >>> firstDigit 230
 2
+
 >>> firstDigit 5623
 5
 
@@ -653,8 +669,11 @@ You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
 
-firstDigit n = error "firstDigit: Not implemented!"
-
+firstDigit :: Integral a => a -> a
+firstDigit n = go (abs n `divMod` 10)
+  where
+    go (0, m) = m
+    go (d, _) = go (d `divMod` 10)
 
 {-
 You did it! Now it is time to open pull request with your changes
